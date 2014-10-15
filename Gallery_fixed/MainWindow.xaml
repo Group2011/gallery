@@ -1,0 +1,63 @@
+﻿<Window x:Class="Gallery.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <StackPanel>
+
+        <StackPanel>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Right">
+                    <WrapPanel DockPanel.Dock="Left">
+                        <Label Content="Зарегистрироваться" Visibility="Hidden" x:Name="RegisterAction"/>
+                        <Label Content="Регистрация" MouseDown="Label_MouseDown_1" x:Name="RegisterLabel"/>
+                        <Label Content="Вход" MouseDown="Login_MouseDown"/>
+                    </WrapPanel>
+                </DockPanel>
+                <WrapPanel Visibility="Hidden" x:Name="Login">
+                    <TextBox x:Name="tbLogin" Text="Login" MinWidth="100"/>
+                    <TextBox x:Name="tbPass" Text="Password" MinWidth="100" Margin="10 0 0 0"/>
+                </WrapPanel>
+                <WrapPanel Visibility="Hidden" x:Name="Register">
+                    <TextBox x:Name="tbConfirmPass" Text="Confirm Password" MinWidth="100" Margin="10 0 0 0"/>
+                </WrapPanel>
+            </DockPanel>
+
+            <DockPanel>
+                <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Visibility="Collapsed" HorizontalAlignment="Stretch" DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True" x:Name="tbSearch">dsadsa</TextBox>
+                <Button Content="Поиск" x:Name="btnSearch" Click="btnSearch_Click"/>
+            </DockPanel>
+        </StackPanel>
+        <WrapPanel Margin="0 10 0 0" x:Name="Tags">
+            <Label Content="Случайные" Margin="10 0 0 0"/>
+            <Label Content="Последние" Margin="10 0 0 0"/>
+            <Label Content="Популярные" Margin="10 0 0 0"/>
+            <Label Content="Теги ..." Margin="10 0 0 0"/>
+        </WrapPanel>
+        <Border BorderBrush="Bisque" BorderThickness="5" Margin="0 30 0 0" x:Name="GalleryContainer">
+            <Grid Margin="0 10 0 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80" MaxHeight="500"></RowDefinition>
+                    <RowDefinition MinHeight="80" MaxHeight="500"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="0" Grid.Column="0" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="0" Grid.Column="1" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="0" Grid.Column="2" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="0" Grid.Column="3" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="0" Grid.Column="4" Stretch="UniformToFill"></Image>
+
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="1" Grid.Column="0" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="1" Grid.Column="1" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="1" Grid.Column="2" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="1" Grid.Column="3" Stretch="UniformToFill"></Image>
+                <Image Source="Koala.jpg" MaxHeight="80" Grid.Row="1" Grid.Column="4" Stretch="UniformToFill"></Image>
+            </Grid>
+        </Border>
+    </StackPanel>
+</Window>

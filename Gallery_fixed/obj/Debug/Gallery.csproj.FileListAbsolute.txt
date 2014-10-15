@@ -1,0 +1,12 @@
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\bin\Debug\Gallery_fixed.exe.config
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\bin\Debug\Gallery_fixed.exe
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\bin\Debug\Gallery_fixed.pdb
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\MainWindow.baml
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\MainWindow.g.cs
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\App.g.cs
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery_fixed_MarkupCompile.cache
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery_fixed.g.resources
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery_fixed.Properties.Resources.resources
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery_fixed.exe
+d:\profiles\06082\documents\visual studio 2012\Projects\Gallery\Gallery_fixed\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
