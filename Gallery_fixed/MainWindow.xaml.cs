@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
 using System.Net;
+using System.Threading;
+using System.IO;
 
 namespace Gallery
 {
@@ -21,11 +23,20 @@ namespace Gallery
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Window window;
         public bool logged = false;
+        private static int unique = 0;
+        private object uniqueLocker = new object();
+        private static int threadJobs = 0;
+        private object threadJobLocker = new object();
+        private static int errors = 0;
+        private object errorsLocker = new object();
+
 
         public MainWindow()
         {
             InitializeComponent();
+            window = this;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -53,56 +64,115 @@ namespace Gallery
             }
         }*/
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e) // метод нужно отладить
+        private void StartParsing(List<string> urls)
         {
-            string url = @"http://pikabu.ru/story/fotografu_na_zametku_2743001";
+            foreach (string s in urls)
+            {
+                ThreadPool.QueueUserWorkItem(ParseUrl, s);
+                lock (threadJobLocker)
+                {
+                    threadJobs++;
+                }
+            }
+        }
+
+        private void ParseUrl(object parseUrl)
+        {
+            string url = parseUrl.ToString();
+            string htmlName = "";
+            lock (uniqueLocker)
+            {
+                htmlName = @"..\..\Parse\" + (unique++).ToString() + ".html";
+            }
             WebClient wc = new WebClient();
             wc.Proxy = new WebProxy("10.3.0.3", 3128);
             wc.Proxy.Credentials = new NetworkCredential("inet", "netnetnet");
 
             try
             {
-                wc.DownloadFile(url, "1.html");
+                wc.DownloadFile(url, htmlName);
+                HtmlDocument doc = new HtmlDocument();
+                doc.Load(htmlName, Encoding.UTF8);
+                HtmlNodeCollection images = doc.DocumentNode.SelectNodes("//img");
+
+                foreach (HtmlNode n in images)
+                {
+                    try
+                    {
+                        string imgPath = n.Attributes["src"].Value;
+                        if (!imgPath.Contains("//")) // Если урл не содержит двух слешей, значит адрес изображения относительный и нужно вычленить из url домен сайта
+                        {
+                            int c = 0;
+                            for (int i = 0; i < url.Length; i++)
+                            {
+                                if (url[i] == '/')
+                                    c++;
+                                if (c == 3)
+                                {
+                                    imgPath = url.Substring(0, i + 1) + imgPath;
+                                    break;
+                                }
+                            }
+                        }
+
+                        string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/'));
+                        if (imgName.IndexOf('&') != -1)
+                            imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
+
+                        wc.DownloadFile(imgPath, imgName);
+                    }
+                    catch
+                    {
+                        lock (errorsLocker)
+                        {
+                            errors++;
+                        }
+                    }
+                }
             }
             catch
             {
+                // нужно заменить выбрасывание окон логгированием (записью ошибок в файл)
                 MessageBox.Show("Ошибка при попытке парсинга страницы\n" + url);
             }
-
-            HtmlDocument doc = new HtmlDocument();
-            doc.Load("1.html", Encoding.UTF8);
-            
-            HtmlNodeCollection images = doc.DocumentNode.SelectNodes("//img");
-            int errors = 0;
-
-            foreach (HtmlNode n in images)
+            finally
             {
-                try
+                lock (threadJobLocker)
                 {
-                    string imgPath = n.Attributes["src"].Value;
-                    if (!imgPath.Contains("//")) // Если урл не содержит двух слешей, значит адрес изображения относительный и нужно вычленить из url домен сайта
+                    threadJobs--;
+                    if (threadJobs == 0)
                     {
-                        int c = 0;
-                        for (int i=0; i<url.Length; i++)
+                        int tmp = 0;
+                        lock (errorsLocker)
                         {
-                            if (url[i] == '/')
-                                c++;
-                            if (c == 3)
-                            {
-                                imgPath = url.Substring(0, i + 1) + imgPath;
-                                break;
-                            }
+                            tmp = errors;
+                            errors = 0;
                         }
+                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { MessageBox.Show("Поиск завершен!\nОшибок: " + tmp.ToString()); }));
                     }
-                    
-                    wc.DownloadFile(imgPath, @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/')));
-                }
-                catch 
-                {
-                    errors++;
                 }
             }
-            MessageBox.Show(errors.ToString());
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            // тестируем потоковые методы
+            List<string> s = new List<string>();
+            s.Add(@"http://mostua.com/");
+            StartParsing(s);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Очищаем директорию "..\..\Parse\" от файлов, оставшихся после парсинга
+            try
+            {
+                DirectoryInfo di = new DirectoryInfo(@"..\..\Parse\");
+                FileInfo[] fi = di.GetFiles();
+                for (int i = 0; i < fi.Length; i++)
+                    fi[i].Delete();
+            }
+            catch { }
         }
     }
 }
