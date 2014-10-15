@@ -29,7 +29,7 @@
         </StackPanel>
         <WrapPanel Margin="0 10 0 0" x:Name="Tags">
             <Label Content="Случайные" Margin="10 0 0 0"/>
-            <Label Content="Последние" Margin="10 0 0 0"/>
+            <Label Content="BBBBBBBBBB" Margin="10 0 0 0"/>
             <Label Content="Популярные" Margin="10 0 0 0"/>
             <Label Content="Теги ..." Margin="10 0 0 0"/>
         </WrapPanel>
