@@ -37,3 +37,6 @@ D:\git\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
 D:\git\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.exe
 D:\git\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
 D:\git\gallery\Gallery_fixed\bin\Debug\HtmlAgilityPack.dll
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\bin\Debug\Gallery_fixed.exe.config
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.exe
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
