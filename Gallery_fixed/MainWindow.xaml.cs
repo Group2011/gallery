@@ -185,5 +185,45 @@ namespace Gallery
             }
             catch { }
         }
+
+        private void Label_MouseDown_2(object sender, MouseButtonEventArgs e)
+        {
+            if (tagcloud.Visibility == System.Windows.Visibility.Collapsed)
+                tagcloud.Visibility = System.Windows.Visibility.Visible;
+            else
+            {
+                tagcloud.Visibility = System.Windows.Visibility.Collapsed;
+                tagcloud.Children.Clear();
+            }
+            Random rnd = new Random();
+            Label l1 = new Label();
+            
+            //это цикл-заглушка. заменить на foreach по тэгам из базы (или что-то более удобное)
+            int xpos = 0; 
+            for (int i = 0; i < 10; i++)
+            {
+                l1 = new Label();
+                l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");
+                l1.MouseEnter += tag_MouseEnter;
+                l1.MouseLeave += tag_MouseLeave;
+                l1.Content = "Tag"; //тэг должен браться из базы
+                xpos += (int)l1.Width;
+                Canvas.SetTop(l1, rnd.Next(30));
+                Canvas.SetLeft(l1, rnd.Next((int)window.ActualWidth - (int)VisualTreeHelper.GetOffset(tagbtn).X - 80)); //вычисляем ширину канваса в зависимости от текущих размеров окна
+                tagcloud.Children.Add(l1);
+            }
+        }
+
+        void tag_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");
+        }
+
+        void tag_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");
+        }
     }
 }
