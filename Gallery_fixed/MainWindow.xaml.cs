@@ -208,12 +208,9 @@ namespace Gallery
                 l1.MouseLeave += tag_MouseLeave;
                 l1.Content = "Tag"; //тэг должен браться из базы
                 xpos += (int)l1.Width;
-                //Canvas.SetTop(l1, rnd.Next(30));
                 Canvas.SetTop(l1, rnd.Next(30));
-                Canvas.SetLeft(l1, xpos + 10);
-                //Canvas.SetLeft(l1, rnd.Next(xpos, (int)window.ActualWidth - xpos)); //вычисляем ширину канваса в зависимости от текущих размеров окна
+                Canvas.SetLeft(l1, rnd.Next((int)window.ActualWidth - (int)VisualTreeHelper.GetOffset(tagbtn).X - 80)); //вычисляем ширину канваса в зависимости от текущих размеров окна
                 tagcloud.Children.Add(l1);
-                //(int)window.ActualWidth - (int)VisualTreeHelper.GetOffset(tagbtn).X - 80)
             }
         }
 

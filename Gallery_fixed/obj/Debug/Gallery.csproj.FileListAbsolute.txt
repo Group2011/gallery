@@ -50,3 +50,4 @@ D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed_MarkupCo
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.g.resources
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.Properties.Resources.resources
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
+D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery.csprojResolveAssemblyReference.cache
