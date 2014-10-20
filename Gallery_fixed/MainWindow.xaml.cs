@@ -64,6 +64,17 @@ namespace Gallery
             }
         }*/
 
+        private List<string> GetLinkList()
+        {
+            List<string> tmp = new List<string>(tbSearch.Text.Split(new string[] { "http" }, StringSplitOptions.RemoveEmptyEntries));
+            List<string> links = new List<string>();
+            foreach (string str in tmp)
+            {
+                links.Add("http" + str);
+            }
+            return links;
+        }
+
         private void StartParsing(List<string> urls)
         {
             foreach (string s in urls)
@@ -164,7 +175,7 @@ namespace Gallery
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Очищаем директорию "..\..\Parse\" от файлов, оставшихся после парсинга
+            // Очищаем директорию "..\..\Parse\" от html файлов, оставшихся после парсинга
             try
             {
                 DirectoryInfo di = new DirectoryInfo(@"..\..\Parse\");
