@@ -169,7 +169,8 @@ namespace Gallery
         {
             // тестируем потоковые методы
             List<string> s = new List<string>();
-            s.Add(@"http://mostua.com/");
+            s.Add(@"http://www.kristianhammerstad.com/");
+            s.Add(@"http://erikjohanssonphoto.com/work/imagecats/personal/");
             StartParsing(s);
         }
 
