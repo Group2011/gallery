@@ -31,6 +31,7 @@ namespace Gallery
         private object threadJobLocker = new object();
         private static int errors = 0;
         private object errorsLocker = new object();
+        private static int user_id = 1; // пока по дефолту
 
 
         public MainWindow()
@@ -87,6 +88,28 @@ namespace Gallery
             }
         }
 
+        private string GetFileName(string path)
+        {
+            if (File.Exists(path))
+            {
+                FileInfo fi = new FileInfo(path);
+                return fi.Name;
+            }
+            else
+                return "--Error";
+        }
+
+        private string GetFilePath(string path)
+        {
+            if (File.Exists(path))
+            {
+                FileInfo fi = new FileInfo(path);
+                return fi.FullName;
+            }
+            else
+                return "--Error";
+        }
+
         private void ParseUrl(object parseUrl)
         {
             string url = parseUrl.ToString();
@@ -129,8 +152,8 @@ namespace Gallery
                         string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/'));
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
-
                         wc.DownloadFile(imgPath, imgName);
+                        DBHelper.AddImage(GetFileName(imgName), GetFilePath(imgName), user_id, GetTagName(imgPath));
                     }
                     catch
                     {
@@ -165,9 +188,24 @@ namespace Gallery
             }
         }
 
+        /// <summary>
+        /// Формирует имя тега url адреса (вычленяет домен без протокола)
+        /// </summary>
+        /// <param name="url">Адрес к изображению</param>
+        /// <returns>Имя тега</returns>
+        public string GetTagName(string url)
+        {
+            if (url == null)
+                return "";
+            if (url.IndexOf("//") != -1)
+                url = url.Substring(url.IndexOf("//") + 2);
+            if (url.IndexOf("/") != -1)
+                url = url.Substring(0, url.IndexOf("/"));
+            return url;
+        }
+
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            // тестируем потоковые методы
             List<string> s = new List<string>();
             s.Add(@"http://www.kristianhammerstad.com/");
             s.Add(@"http://erikjohanssonphoto.com/work/imagecats/personal/");
@@ -185,6 +223,46 @@ namespace Gallery
                     fi[i].Delete();
             }
             catch { }
+        }
+
+        private void Label_MouseDown_2(object sender, MouseButtonEventArgs e)
+        {
+            if (tagcloud.Visibility == System.Windows.Visibility.Collapsed)
+                tagcloud.Visibility = System.Windows.Visibility.Visible;
+            else
+            {
+                tagcloud.Visibility = System.Windows.Visibility.Collapsed;
+                tagcloud.Children.Clear();
+            }
+            Random rnd = new Random();
+            Label l1 = new Label();
+            
+            //это цикл-заглушка. заменить на foreach по тэгам из базы (или что-то более удобное)
+            int xpos = 0; 
+            for (int i = 0; i < 10; i++)
+            {
+                l1 = new Label();
+                l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");
+                l1.MouseEnter += tag_MouseEnter;
+                l1.MouseLeave += tag_MouseLeave;
+                l1.Content = "Tag"; //тэг должен браться из базы
+                xpos += (int)l1.Width;
+                Canvas.SetTop(l1, rnd.Next(30));
+                Canvas.SetLeft(l1, rnd.Next((int)window.ActualWidth - (int)VisualTreeHelper.GetOffset(tagbtn).X - 80)); //вычисляем ширину канваса в зависимости от текущих размеров окна
+                tagcloud.Children.Add(l1);
+            }
+        }
+
+        void tag_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");
+        }
+
+        void tag_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");
         }
     }
 }

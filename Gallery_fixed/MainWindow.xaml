@@ -2,6 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush Color="Blue" x:Key="tagBrush"></SolidColorBrush>
+        <Style x:Key="TagDefaultStyle">
+            <Setter Property="Control.FontSize" Value="12"></Setter>
+            <Setter Property="Control.Padding" Value="5"></Setter>
+            <Setter Property="Control.Foreground" Value="{StaticResource tagBrush}"></Setter>
+        </Style>
+        <Style x:Key="TagMouseEntertStyle">
+            <Setter Property="Control.FontSize" Value="18"></Setter>
+            <Setter Property="Control.FontWeight" Value="Bold"></Setter>
+            <Setter Property="Control.Padding" Value="5"></Setter>
+            <Setter Property="Control.Foreground" Value="{StaticResource tagBrush}"></Setter>
+        </Style>
+    </Window.Resources>
+    
     <StackPanel>
 
         <StackPanel>
@@ -31,7 +46,8 @@
             <Label Content="Случайные" Margin="10 0 0 0"/>
             <Label Content="BBBBBBBBBB" Margin="10 0 0 0"/>
             <Label Content="Популярные" Margin="10 0 0 0"/>
-            <Label Content="Теги ..." Margin="10 0 0 0"/>
+            <Label Content="Теги ..." Margin="10 0 0 0" MouseDown="Label_MouseDown_2" x:Name="tagbtn"/>
+            <Canvas x:Name="tagcloud" Visibility="Collapsed"></Canvas>
         </WrapPanel>
         <Border BorderBrush="Bisque" BorderThickness="5" Margin="0 30 0 0" x:Name="GalleryContainer">
             <Grid Margin="0 10 0 10">
