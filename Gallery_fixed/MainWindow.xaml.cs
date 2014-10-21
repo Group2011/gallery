@@ -31,7 +31,8 @@ namespace Gallery
         private object threadJobLocker = new object();
         private static int errors = 0;
         private object errorsLocker = new object();
-
+        public static List<ImageSource> sources = new List<ImageSource>();
+        public static int iterator = 0;
 
         public MainWindow()
         {
@@ -127,19 +128,24 @@ namespace Gallery
                         }
 
                         string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/'));
+                        
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
 
                         wc.DownloadFile(imgPath, imgName);
+                        
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        MessageBox.Show(ex.Message + ex.StackTrace);
                         lock (errorsLocker)
                         {
                             errors++;
                         }
                     }
                 }
+
+                
             }
             catch
             {
@@ -224,6 +230,164 @@ namespace Gallery
         {
             Label l1 = (Label)sender;
             l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (iterator + 1 >= sources.Count)
+                iterator = 0;
+            else
+                iterator++;
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            if (iterator + 1 >= sources.Count)
+            {
+                mediumRightIMG.Source = sources[0];
+                mirrorMediumRightIMG.Source = sources[0];
+            }
+            else
+            {
+                mediumRightIMG.Source = sources[iterator + 1];
+                mirrorMediumRightIMG.Source = sources[iterator + 1];
+            }
+
+            if (iterator + 2 >= sources.Count)
+            {
+                smallRightImg.Source = sources[1];
+                mirrorSmallRightIMG.Source = sources[1];
+            }
+            else
+            {
+                smallRightImg.Source = sources[iterator + 2];
+                mirrorSmallRightIMG.Source = sources[iterator + 2];
+            }
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
+
+            
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (iterator - 1 < 0)
+                iterator = sources.Count - 1;
+            else
+                iterator--;
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            if (iterator + 1 >= sources.Count)
+            {
+                mediumRightIMG.Source = sources[0];
+                mirrorMediumRightIMG.Source = sources[0];
+            }
+            else
+            {
+                mediumRightIMG.Source = sources[iterator + 1];
+                mirrorMediumRightIMG.Source = sources[iterator + 1];
+            }
+
+            if (iterator + 2 >= sources.Count)
+            {
+                smallRightImg.Source = sources[1];
+                mirrorSmallRightIMG.Source = sources[1];
+            }
+            else
+            {
+                smallRightImg.Source = sources[iterator + 2];
+                mirrorSmallRightIMG.Source = sources[iterator + 2];
+            }
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
+
+            
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            DirectoryInfo di = new DirectoryInfo("../../Images");
+            FileInfo[] images = di.GetFiles();
+            Random r = new Random();
+            double tmp = r.Next(200, 301);
+            foreach (FileInfo f in images)
+            {
+                ImageSourceConverter imgConv = new ImageSourceConverter();
+                sources.Add((ImageSource)imgConv.ConvertFromString(f.FullName));
+            }
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            mediumRightIMG.Source = sources[iterator + 1];
+            mirrorMediumRightIMG.Source = sources[iterator + 1];
+
+            smallRightImg.Source = sources[iterator + 2];
+            mirrorSmallRightIMG.Source = sources[iterator + 2];
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
         }
     }
 }
