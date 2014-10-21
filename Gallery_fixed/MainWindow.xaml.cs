@@ -57,13 +57,6 @@ namespace Gallery
             logged = true;
         }
 
-        /*private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            if (logged)
-            {
-                tbSearch.Visibility = System.Windows.Visibility.Visible;
-            }
-        }*/
 
         private List<string> GetLinkList()
         {
