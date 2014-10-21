@@ -37,6 +37,22 @@ D:\git\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
 D:\git\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.exe
 D:\git\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
 D:\git\gallery\Gallery_fixed\bin\Debug\HtmlAgilityPack.dll
+<<<<<<< HEAD
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\bin\Debug\Gallery_fixed.exe.config
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\bin\Debug\Gallery_fixed.exe
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\bin\Debug\Gallery_fixed.pdb
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\bin\Debug\HtmlAgilityPack.dll
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery.csprojResolveAssemblyReference.cache
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\MainWindow.baml
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\MainWindow.g.cs
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\App.g.cs
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed_MarkupCompile.cache
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.g.resources
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.Properties.Resources.resources
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.exe
+d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
+=======
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\bin\Debug\Gallery_fixed.exe.config
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.exe
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.pdb
@@ -51,3 +67,4 @@ D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.g.resour
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.Properties.Resources.resources
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
 D:\Profiles\06082\gallery\gallery\Gallery_fixed\obj\Debug\Gallery.csprojResolveAssemblyReference.cache
+>>>>>>> 7945f199dbca41d02a0ff2267b1c6e2139226bc1
