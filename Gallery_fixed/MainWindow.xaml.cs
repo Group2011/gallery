@@ -16,6 +16,7 @@ using System.Net;
 using System.Threading;
 using System.IO;
 using Gallery_fixed;
+using System.Text.RegularExpressions;
 
 namespace Gallery
 {
@@ -40,8 +41,9 @@ namespace Gallery
         {
             InitializeComponent();
             window = this;
-            CreateGallery();
+            tbSearch.Visibility = System.Windows.Visibility.Visible; //!!!!!
             areaRef = area;
+            CreateGallery();
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -71,13 +73,22 @@ namespace Gallery
 
         private List<string> GetLinkList()
         {
-            List<string> tmp = new List<string>(tbSearch.Text.Split(new string[] { "http" }, StringSplitOptions.RemoveEmptyEntries));
-            List<string> links = new List<string>();
-            foreach (string str in tmp)
+            try
             {
-                links.Add("http" + str);
+                List<string> tmp = new List<string>(tbSearch.Text.Split(new string[] { "http" }, StringSplitOptions.RemoveEmptyEntries));
+                List<string> links = new List<string>();
+                foreach (string str in tmp)
+                {
+                    string s = "http" + str;
+                    links.Add(@s);
+                }
+                return links;
             }
-            return links;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
+                return new List<string>();
+            }
         }
 
         private void StartParsing(List<string> urls)
@@ -115,6 +126,7 @@ namespace Gallery
                 {
                     try
                     {
+                        char[] DelChars = { '%', '_', '-', };
                         string imgPath = n.Attributes["src"].Value;
                         if (!imgPath.Contains("//")) // Если урл не содержит двух слешей, значит адрес изображения относительный и нужно вычленить из url домен сайта
                         {
@@ -135,7 +147,7 @@ namespace Gallery
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
 
-                        wc.DownloadFile(imgPath, imgName);
+                        wc.DownloadFile(imgPath, Regex.Replace(imgName,@"[-%_^]", "", RegexOptions.Compiled));
                     }
                     catch
                     {
@@ -164,7 +176,9 @@ namespace Gallery
                             tmp = errors;
                             errors = 0;
                         }
-                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { MessageBox.Show("Поиск завершен!\nОшибок: " + tmp.ToString()); }));
+                  //      MainWindow.window.Dispatcher.Invoke(new Action(delegate() { MessageBox.Show("Поиск завершен!\nОшибок: " + tmp.ToString()); }));
+                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { Cursor = Cursors.Arrow; }));
+                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { CreateGallery(); }));
                     }
                 }
             }
@@ -172,10 +186,18 @@ namespace Gallery
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            // тестируем потоковые методы
-            List<string> s = new List<string>();
-            s.Add(@"http://mostua.com/");
-            StartParsing(s);
+            try
+            {
+                // тестируем потоковые методы
+                List<string> s = new List<string>();
+                s = GetLinkList();
+                StartParsing(s);
+                Cursor = Cursors.Wait;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -233,6 +255,7 @@ namespace Gallery
 
         public void CreateGallery()
         {
+            
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
@@ -254,7 +277,6 @@ namespace Gallery
                 img.Cursor = Cursors.SizeAll;
                 border.Child = img;
                 area.Children.Add(border);
-                //area.Children.Add(img);
             }
         }
 
