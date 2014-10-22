@@ -15,6 +15,7 @@ using HtmlAgilityPack;
 using System.Net;
 using System.Threading;
 using System.IO;
+using Gallery_fixed;
 
 namespace Gallery
 {
@@ -24,6 +25,8 @@ namespace Gallery
     public partial class MainWindow : Window
     {
         public static Window window;
+        public static WrapPanel areaRef;
+
         public bool logged = false;
         private static int unique = 0;
         private object uniqueLocker = new object();
@@ -31,18 +34,14 @@ namespace Gallery
         private object threadJobLocker = new object();
         private static int errors = 0;
         private object errorsLocker = new object();
-<<<<<<< HEAD
-        private static int user_id = 1; // пока по дефолту
 
-=======
-        public static List<ImageSource> sources = new List<ImageSource>();
-        public static int iterator = 0;
->>>>>>> 2d201b58e0a4e9faaa2e50479c62b7e842cc8805
 
         public MainWindow()
         {
             InitializeComponent();
             window = this;
+            CreateGallery();
+            areaRef = area;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -62,6 +61,13 @@ namespace Gallery
             logged = true;
         }
 
+        /*private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (logged)
+            {
+                tbSearch.Visibility = System.Windows.Visibility.Visible;
+            }
+        }*/
 
         private List<string> GetLinkList()
         {
@@ -84,28 +90,6 @@ namespace Gallery
                     threadJobs++;
                 }
             }
-        }
-
-        private string GetFileName(string path)
-        {
-            if (File.Exists(path))
-            {
-                FileInfo fi = new FileInfo(path);
-                return fi.Name;
-            }
-            else
-                return "--Error";
-        }
-
-        private string GetFilePath(string path)
-        {
-            if (File.Exists(path))
-            {
-                FileInfo fi = new FileInfo(path);
-                return fi.FullName;
-            }
-            else
-                return "--Error";
         }
 
         private void ParseUrl(object parseUrl)
@@ -148,27 +132,19 @@ namespace Gallery
                         }
 
                         string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/'));
-                        
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
+
                         wc.DownloadFile(imgPath, imgName);
-<<<<<<< HEAD
-                        DBHelper.AddImage(GetFileName(imgName), GetFilePath(imgName), user_id, GetTagName(imgPath));
-=======
-                        
->>>>>>> 2d201b58e0a4e9faaa2e50479c62b7e842cc8805
                     }
-                    catch(Exception ex)
+                    catch
                     {
-                        MessageBox.Show(ex.Message + ex.StackTrace);
                         lock (errorsLocker)
                         {
                             errors++;
                         }
                     }
                 }
-
-                
             }
             catch
             {
@@ -194,27 +170,11 @@ namespace Gallery
             }
         }
 
-        /// <summary>
-        /// Формирует имя тега url адреса (вычленяет домен без протокола)
-        /// </summary>
-        /// <param name="url">Адрес к изображению</param>
-        /// <returns>Имя тега</returns>
-        public string GetTagName(string url)
-        {
-            if (url == null)
-                return "";
-            if (url.IndexOf("//") != -1)
-                url = url.Substring(url.IndexOf("//") + 2);
-            if (url.IndexOf("/") != -1)
-                url = url.Substring(0, url.IndexOf("/"));
-            return url;
-        }
-
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            // тестируем потоковые методы
             List<string> s = new List<string>();
-            s.Add(@"http://www.kristianhammerstad.com/");
-            s.Add(@"http://erikjohanssonphoto.com/work/imagecats/personal/");
+            s.Add(@"http://mostua.com/");
             StartParsing(s);
         }
 
@@ -271,162 +231,64 @@ namespace Gallery
             l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (iterator + 1 >= sources.Count)
-                iterator = 0;
-            else
-                iterator++;
-
-            largeIMG.Source = sources[iterator];
-            mirrorLargeIMG.Source = sources[iterator];
-
-            if (iterator + 1 >= sources.Count)
-            {
-                mediumRightIMG.Source = sources[0];
-                mirrorMediumRightIMG.Source = sources[0];
-            }
-            else
-            {
-                mediumRightIMG.Source = sources[iterator + 1];
-                mirrorMediumRightIMG.Source = sources[iterator + 1];
-            }
-
-            if (iterator + 2 >= sources.Count)
-            {
-                smallRightImg.Source = sources[1];
-                mirrorSmallRightIMG.Source = sources[1];
-            }
-            else
-            {
-                smallRightImg.Source = sources[iterator + 2];
-                mirrorSmallRightIMG.Source = sources[iterator + 2];
-            }
-
-            if (iterator - 1 < 0)
-            {
-                mediumLeftIMG.Source = sources[sources.Count - 1];
-                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
-            }
-            else
-            {
-                mediumLeftIMG.Source = sources[iterator - 1];
-                mirrorMediumLeftIMG.Source = sources[iterator - 1];
-            }
-
-            if (iterator - 2 < 0)
-            {
-                smallLeftIMG.Source = sources[sources.Count - 2];
-                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
-            }
-            else
-            {
-                smallLeftIMG.Source = sources[iterator - 2];
-                mirrorSmallLeftIMG.Source = sources[iterator - 2];
-            }
-
-            
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            if (iterator - 1 < 0)
-                iterator = sources.Count - 1;
-            else
-                iterator--;
-
-            largeIMG.Source = sources[iterator];
-            mirrorLargeIMG.Source = sources[iterator];
-
-            if (iterator + 1 >= sources.Count)
-            {
-                mediumRightIMG.Source = sources[0];
-                mirrorMediumRightIMG.Source = sources[0];
-            }
-            else
-            {
-                mediumRightIMG.Source = sources[iterator + 1];
-                mirrorMediumRightIMG.Source = sources[iterator + 1];
-            }
-
-            if (iterator + 2 >= sources.Count)
-            {
-                smallRightImg.Source = sources[1];
-                mirrorSmallRightIMG.Source = sources[1];
-            }
-            else
-            {
-                smallRightImg.Source = sources[iterator + 2];
-                mirrorSmallRightIMG.Source = sources[iterator + 2];
-            }
-
-            if (iterator - 1 < 0)
-            {
-                mediumLeftIMG.Source = sources[sources.Count - 1];
-                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
-            }
-            else
-            {
-                mediumLeftIMG.Source = sources[iterator - 1];
-                mirrorMediumLeftIMG.Source = sources[iterator - 1];
-            }
-
-            if (iterator - 2 < 0)
-            {
-                smallLeftIMG.Source = sources[sources.Count - 2];
-                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
-            }
-            else
-            {
-                smallLeftIMG.Source = sources[iterator - 2];
-                mirrorSmallLeftIMG.Source = sources[iterator - 2];
-            }
-
-            
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        public void CreateGallery()
         {
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
             double tmp = r.Next(200, 301);
+
             foreach (FileInfo f in images)
             {
                 ImageSourceConverter imgConv = new ImageSourceConverter();
-                sources.Add((ImageSource)imgConv.ConvertFromString(f.FullName));
+                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(f.FullName);
+                Image img = new Image();
+                img.Height = tmp;
+                img.Source = imageSource;
+                img.MouseDown += img_MouseDown;
+                img.MouseEnter += img_MouseEnter;
+                img.MouseLeave += img_MouseLeave;
+                Border border = new Border();
+                border.BorderBrush = new SolidColorBrush(Colors.Green);
+                border.BorderThickness = new Thickness(3);
+                img.Cursor = Cursors.SizeAll;
+                border.Child = img;
+                area.Children.Add(border);
+                //area.Children.Add(img);
             }
+        }
 
-            largeIMG.Source = sources[iterator];
-            mirrorLargeIMG.Source = sources[iterator];
+        void img_MouseLeave(object sender, MouseEventArgs e)
+        {
+            //(sender as Image).Width -= 20;
+            //(sender as Image).Height -= 20;
+            Border b = (Border)(sender as Image).Parent;
+            b.BorderThickness = new Thickness(3);
+            b.BorderBrush = new SolidColorBrush(Colors.Green);
 
-            mediumRightIMG.Source = sources[iterator + 1];
-            mirrorMediumRightIMG.Source = sources[iterator + 1];
+        }
 
-            smallRightImg.Source = sources[iterator + 2];
-            mirrorSmallRightIMG.Source = sources[iterator + 2];
+        void img_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //(sender as Image).Width += 20;
+            //(sender as Image).Height += 20;
+            Border b = (Border)(sender as Image).Parent;
+            b.BorderThickness = new Thickness(3);
+            b.BorderBrush = new SolidColorBrush(Colors.Bisque);
+        }
 
-            if (iterator - 1 < 0)
+        void img_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ImageView mv = new ImageView(sender as Image);
+            foreach (Border img in area.Children)
             {
-                mediumLeftIMG.Source = sources[sources.Count - 1];
-                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+                img.Opacity = 0.3;
             }
-            else
-            {
-                mediumLeftIMG.Source = sources[iterator - 1];
-                mirrorMediumLeftIMG.Source = sources[iterator - 1];
-            }
+            mv.Show();
+        }
 
-            if (iterator - 2 < 0)
-            {
-                smallLeftIMG.Source = sources[sources.Count - 2];
-                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
-            }
-            else
-            {
-                smallLeftIMG.Source = sources[iterator - 2];
-                mirrorSmallLeftIMG.Source = sources[iterator - 2];
-            }
+        private void Window_SizeChanged_1(object sender, SizeChangedEventArgs e)
+        {
         }
     }
 }

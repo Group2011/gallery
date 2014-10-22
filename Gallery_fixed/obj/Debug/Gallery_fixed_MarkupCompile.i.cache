@@ -4,29 +4,17 @@
 winexe
 C#
 .cs
-<<<<<<< HEAD
-D:\git\gallery\Gallery_fixed\obj\Debug\
-=======
-d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\obj\Debug\
->>>>>>> 2d201b58e0a4e9faaa2e50479c62b7e842cc8805
+d:\Profiles\06082\test\gallery\Gallery_fixed\obj\Debug\
 Gallery_fixed
 none
 false
 DEBUG;TRACE
-<<<<<<< HEAD
-D:\git\gallery\Gallery_fixed\App.xaml
-11151548125
+d:\Profiles\06082\test\gallery\Gallery_fixed\App.xaml
+2-570044184
 
-10-1657040354
-14-1440739101
-=======
-d:\Profiles\06177\TestProj\Gallery\Gallery_fixed\App.xaml
-11151548125
-
-9-500163979
-13-2130232556
->>>>>>> 2d201b58e0a4e9faaa2e50479c62b7e842cc8805
-MainWindow.xaml;
+10964371852
+13-762033920
+MainWindow.xaml;ImageView.xaml;
 
 False
 
