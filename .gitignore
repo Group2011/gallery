@@ -2,4 +2,4 @@
 *.cache
 *.pdb
 *.manifest
-
+*.suo

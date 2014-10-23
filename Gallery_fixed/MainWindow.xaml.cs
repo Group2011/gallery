@@ -16,7 +16,6 @@ using System.Net;
 using System.Threading;
 using System.IO;
 using Gallery_fixed;
-using System.Text.RegularExpressions;
 
 namespace Gallery
 {
@@ -27,6 +26,7 @@ namespace Gallery
     {
         public static Window window;
         public static WrapPanel areaRef;
+        public static ScrollViewer gallRef;
 
         public bool logged = false;
         private static int unique = 0;
@@ -41,9 +41,9 @@ namespace Gallery
         {
             InitializeComponent();
             window = this;
-            tbSearch.Visibility = System.Windows.Visibility.Visible; //!!!!!
-            areaRef = area;
             CreateGallery();
+            areaRef = area;
+            gallRef = GalleryContainer;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -73,22 +73,13 @@ namespace Gallery
 
         private List<string> GetLinkList()
         {
-            try
+            List<string> tmp = new List<string>(tbSearch.Text.Split(new string[] { "http" }, StringSplitOptions.RemoveEmptyEntries));
+            List<string> links = new List<string>();
+            foreach (string str in tmp)
             {
-                List<string> tmp = new List<string>(tbSearch.Text.Split(new string[] { "http" }, StringSplitOptions.RemoveEmptyEntries));
-                List<string> links = new List<string>();
-                foreach (string str in tmp)
-                {
-                    string s = "http" + str;
-                    links.Add(@s);
-                }
-                return links;
+                links.Add("http" + str);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace);
-                return new List<string>();
-            }
+            return links;
         }
 
         private void StartParsing(List<string> urls)
@@ -126,7 +117,6 @@ namespace Gallery
                 {
                     try
                     {
-                        char[] DelChars = { '%', '_', '-', };
                         string imgPath = n.Attributes["src"].Value;
                         if (!imgPath.Contains("//")) // Если урл не содержит двух слешей, значит адрес изображения относительный и нужно вычленить из url домен сайта
                         {
@@ -147,7 +137,7 @@ namespace Gallery
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
 
-                        wc.DownloadFile(imgPath, Regex.Replace(imgName,@"[-%_^]", "", RegexOptions.Compiled));
+                        wc.DownloadFile(imgPath, imgName);
                     }
                     catch
                     {
@@ -176,9 +166,7 @@ namespace Gallery
                             tmp = errors;
                             errors = 0;
                         }
-                  //      MainWindow.window.Dispatcher.Invoke(new Action(delegate() { MessageBox.Show("Поиск завершен!\nОшибок: " + tmp.ToString()); }));
-                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { Cursor = Cursors.Arrow; }));
-                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { CreateGallery(); }));
+                        MainWindow.window.Dispatcher.Invoke(new Action(delegate() { MessageBox.Show("Поиск завершен!\nОшибок: " + tmp.ToString()); }));
                     }
                 }
             }
@@ -186,18 +174,10 @@ namespace Gallery
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // тестируем потоковые методы
-                List<string> s = new List<string>();
-                s = GetLinkList();
-                StartParsing(s);
-                Cursor = Cursors.Wait;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace);
-            }
+            // тестируем потоковые методы
+            List<string> s = new List<string>();
+            s.Add(@"http://mostua.com/");
+            StartParsing(s);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -215,7 +195,7 @@ namespace Gallery
 
         private void Label_MouseDown_2(object sender, MouseButtonEventArgs e)
         {
-            if (tagcloud.Visibility == System.Windows.Visibility.Collapsed)
+            /*if (tagcloud.Visibility == System.Windows.Visibility.Collapsed)
                 tagcloud.Visibility = System.Windows.Visibility.Visible;
             else
             {
@@ -238,24 +218,25 @@ namespace Gallery
                 Canvas.SetTop(l1, rnd.Next(30));
                 Canvas.SetLeft(l1, rnd.Next((int)window.ActualWidth - (int)VisualTreeHelper.GetOffset(tagbtn).X - 80)); //вычисляем ширину канваса в зависимости от текущих размеров окна
                 tagcloud.Children.Add(l1);
-            }
+            }*/
         }
 
         void tag_MouseLeave(object sender, MouseEventArgs e)
         {
-            Label l1 = (Label)sender;
-            l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");
+            /*Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");*/
         }
 
         void tag_MouseEnter(object sender, MouseEventArgs e)
         {
-            Label l1 = (Label)sender;
-            l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");
+            /*Label l1 = (Label)sender;
+            l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");*/
         }
+        
+
 
         public void CreateGallery()
         {
-            
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
@@ -272,11 +253,13 @@ namespace Gallery
                 img.MouseEnter += img_MouseEnter;
                 img.MouseLeave += img_MouseLeave;
                 Border border = new Border();
-                border.BorderBrush = new SolidColorBrush(Colors.Green);
-                border.BorderThickness = new Thickness(3);
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
+                border.BorderThickness = new Thickness(1);
+                border.Margin = new Thickness(3);
                 img.Cursor = Cursors.SizeAll;
                 border.Child = img;
                 area.Children.Add(border);
+                //area.Children.Add(img);
             }
         }
 
@@ -285,9 +268,8 @@ namespace Gallery
             //(sender as Image).Width -= 20;
             //(sender as Image).Height -= 20;
             Border b = (Border)(sender as Image).Parent;
-            b.BorderThickness = new Thickness(3);
-            b.BorderBrush = new SolidColorBrush(Colors.Green);
-
+            b.BorderThickness = new Thickness(1);
+            b.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC")); 
         }
 
         void img_MouseEnter(object sender, MouseEventArgs e)
@@ -295,22 +277,39 @@ namespace Gallery
             //(sender as Image).Width += 20;
             //(sender as Image).Height += 20;
             Border b = (Border)(sender as Image).Parent;
-            b.BorderThickness = new Thickness(3);
-            b.BorderBrush = new SolidColorBrush(Colors.Bisque);
+            b.BorderThickness = new Thickness(1);
+            b.BorderBrush = new SolidColorBrush(Colors.Blue);
         }
 
         void img_MouseDown(object sender, MouseButtonEventArgs e)
         {
             ImageView mv = new ImageView(sender as Image);
+            SolidColorBrush bgBrush = new SolidColorBrush(Colors.Black);
+            bgBrush.Opacity = 0.3;
+            GalleryContainer.Background = bgBrush;
             foreach (Border img in area.Children)
             {
-                img.Opacity = 0.3;
+                img.Opacity = 0.1;
             }
             mv.Show();
         }
 
         private void Window_SizeChanged_1(object sender, SizeChangedEventArgs e)
         {
+        }
+
+        private void Label_MouseEnter(object sender, MouseEventArgs e)
+        {
+            (sender as Label).Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
+            (sender as Label).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+            (sender as Label).Cursor = Cursors.Hand;
+        }
+
+        private void Label_MouseLeave(object sender, MouseEventArgs e)
+        {
+            (sender as Label).Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+            (sender as Label).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
+            (sender as Label).Cursor = Cursors.Arrow;
         }
     }
 }

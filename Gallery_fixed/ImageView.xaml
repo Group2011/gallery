@@ -1,8 +1,8 @@
 ﻿<Window x:Class="Gallery_fixed.ImageView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ImageView" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="True" AllowsTransparency="True" ShowInTaskbar="False">
-    <Border BorderBrush="DarkKhaki" BorderThickness="5" x:Name="b">
+        Title="ImageView" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="True" AllowsTransparency="True" ShowInTaskbar="False" WindowState="Maximized">
+    <Border BorderBrush="Black" BorderThickness="1" x:Name="b">
         <Grid x:Name="area">
         </Grid>
     </Border>
