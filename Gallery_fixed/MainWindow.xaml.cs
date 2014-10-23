@@ -311,5 +311,6 @@ namespace Gallery
             (sender as Label).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
             (sender as Label).Cursor = Cursors.Arrow;
         }
+
     }
 }
