@@ -53,7 +53,7 @@ namespace Gallery_fixed
         {
             //анимация градиента фона окна
             DoubleAnimation gradient = new DoubleAnimation();
-            gradient.Duration = TimeSpan.FromSeconds(0.25);
+            gradient.Duration = TimeSpan.FromSeconds(0.2);
             gradient.From = 0;
             gradient.To = 1;
             gradient.AutoReverse = true;
@@ -62,14 +62,14 @@ namespace Gallery_fixed
 
             //анимация появления картинки через изменения прозрачности
             DoubleAnimation animationOpacity = new DoubleAnimation();
-            animationOpacity.Duration = TimeSpan.FromSeconds(0.5);
+            animationOpacity.Duration = TimeSpan.FromSeconds(0.2);
             animationOpacity.From = 0;
             animationOpacity.To = 1;
             img.BeginAnimation(Image.OpacityProperty, animationOpacity);
 
             //анимация появления границ окна
             DoubleAnimation opacityAnBorder = new DoubleAnimation();
-            opacityAnBorder.Duration = TimeSpan.FromSeconds(0.5);
+            opacityAnBorder.Duration = TimeSpan.FromSeconds(0.2);
             opacityAnBorder.From = 0;
             opacityAnBorder.To = 1;
             b.BeginAnimation(Border.OpacityProperty, opacityAnBorder);
