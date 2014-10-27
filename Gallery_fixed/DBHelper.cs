@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
 using System.Windows;
-using System.Data;
 
 namespace Gallery
 {
@@ -139,6 +139,48 @@ namespace Gallery
                     connSql.Close();
             }
             return result;
+        }
+
+        public static List<string> GetTags()
+        {
+            try
+            {
+                SqlConnection connSql = GetConnection();
+                SqlCommand commSQl = new SqlCommand();
+                SqlDataReader reader = null;
+                List<string> tags = new List<string>();
+                commSQl.Connection = connSql;
+                commSQl.CommandText = "select name from tags";
+                DataTable dt = new DataTable();
+
+                reader = commSQl.ExecuteReader();
+                int line = 0;
+                while (reader.Read())
+                {
+                    if (line == 0)
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            dt.Columns.Add(reader.GetName(i));
+                        }
+                        line++;
+
+                    }
+                    DataRow row = dt.NewRow();
+                    for (int j = 0; j < line; j++)
+                    {
+                        row[j] = reader[j];
+                        tags.Add(row[j].ToString());
+                    }
+                    dt.Rows.Add(row);
+                }
+                return tags;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
+                return null;
+            }
         }
     }
 }

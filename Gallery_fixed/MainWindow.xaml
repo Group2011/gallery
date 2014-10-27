@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gallery.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing" SizeChanged="Window_SizeChanged_1">
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing" SizeChanged="Window_SizeChanged_1" Loaded="Window_Loaded_1">
     <Window.Resources>
         <SolidColorBrush Color="Blue" x:Key="tagBrush"></SolidColorBrush>
         <Style x:Key="TagDefaultStyle">
@@ -64,36 +64,7 @@
                     <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
                     <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
                     <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
+                    
                     <!--Label Content="Теги ..." Margin="10 0 0 0" MouseDown="Label_MouseDown_2" x:Name="tagbtn"/>
                     <Canvas x:Name="tagcloud" Visibility="Collapsed"></Canvas-->
                 </WrapPanel>

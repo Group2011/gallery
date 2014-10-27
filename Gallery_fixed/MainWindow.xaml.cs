@@ -300,5 +300,20 @@ namespace Gallery
             (sender as Label).Cursor = Cursors.Arrow;
         }
 
+        private void Window_Loaded_1(object sender, RoutedEventArgs e)
+        {
+            List<string> tags = DBHelper.GetTags();
+            foreach (var v in tags)
+            {
+                Label l = new Label();
+                l.Content = v.ToString();
+                l.Tag = v.ToString();
+                l.MouseEnter += Label_MouseEnter;
+                l.MouseLeave += Label_MouseLeave;
+                l.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
+                l.FontSize=14;
+                Tags.Children.Add(l);
+            }
+        }
     }
 }
