@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Profiles\06213\TestProject\gallery\Gallery_fixed\obj\Debug\
+D:\git\gallery\Gallery_fixed\obj\Debug\
 Gallery_fixed
 none
 false
 DEBUG;TRACE
-D:\Profiles\06213\TestProject\gallery\Gallery_fixed\App.xaml
+D:\git\gallery\Gallery_fixed\App.xaml
 2-570044184
 
 7-1193092021
-14-2121444050
+14-1440739101
 MainWindow.xaml;ImageView.xaml;
 
 False

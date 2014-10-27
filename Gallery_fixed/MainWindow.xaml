@@ -61,12 +61,7 @@
             
             <Border Margin="5">
                 <WrapPanel x:Name="Tags">
-                    <Label Content="Случайные" Tag="Случайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
-                    <Label Content="Весёлые" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    <Label Content="Популярные" Margin="0 0 0 0" FontSize="14"  FontFamily="Calibri" Foreground="#1B5287" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
-                    
-                    <!--Label Content="Теги ..." Margin="10 0 0 0" MouseDown="Label_MouseDown_2" x:Name="tagbtn"/>
-                    <Canvas x:Name="tagcloud" Visibility="Collapsed"></Canvas-->
+                    <Label Content="cлучайные" Tag="cлучайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
                 </WrapPanel>
             </Border>
 
