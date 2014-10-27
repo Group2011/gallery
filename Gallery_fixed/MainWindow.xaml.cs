@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using HtmlAgilityPack;
 using System.Net;
 using System.Threading;
@@ -36,13 +37,13 @@ namespace Gallery
         private object threadJobLocker = new object();
         private static int errors = 0;
         private object errorsLocker = new object();
-
+        private RotateTransform rt = null;
 
         public MainWindow()
         {
             InitializeComponent();
             window = this;
-            CreateGallery();
+            CreateGallery3();
             areaRef = area;
             gallRef = GalleryContainer;
         }
@@ -285,10 +286,6 @@ namespace Gallery
             mv.Show();
         }
 
-        private void Window_SizeChanged_1(object sender, SizeChangedEventArgs e)
-        {
-        }
-
         private void Label_MouseEnter(object sender, MouseEventArgs e)
         {
             (sender as Label).Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
@@ -319,5 +316,67 @@ namespace Gallery
                 Tags.Children.Add(l);
             }
         }
+
+        public void CreateGallery3()
+        {
+            //LinearGradientBrush lgb = new LinearGradientBrush();
+            //GradientStop gs1 = new GradientStop(Colors.Black, 0);
+            //GradientStop gs2 = new GradientStop(Colors.DarkBlue, 0.50);
+            //GradientStop gs3 = new GradientStop(Colors.Blue, 0.89);
+            //GradientStop gs4 = new GradientStop(Colors.White, 1);
+            //lgb.GradientStops.Add(gs1);
+            //lgb.GradientStops.Add(gs2);
+            //lgb.GradientStops.Add(gs3);
+            //lgb.GradientStops.Add(gs4);
+            //area.Background = lgb;
+
+            DirectoryInfo di = new DirectoryInfo("../../Images");
+            FileInfo[] images = di.GetFiles();
+            Random r = new Random();
+            double tmp = r.Next(150, 250);
+
+            foreach (FileInfo f in images)
+            {
+                ImageSourceConverter imgConv = new ImageSourceConverter();
+                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(f.FullName);
+                Image img = new Image();
+                img.Height = tmp;
+                img.Source = imageSource;
+                img.MouseDown += img_MouseDown;
+                img.MouseEnter += imgRotate_MouseEnter;
+                img.MouseLeave += imgRotate_MouseLeave;
+                Border border = new Border();
+                border.BorderBrush = new SolidColorBrush(Colors.Black);
+                border.BorderThickness = new Thickness(2);
+                border.Margin = new Thickness(12);
+                RotateTransform rt = new RotateTransform(r.Next(-5, 5));
+                border.RenderTransformOrigin = new Point(0.5, 0.5);
+                border.RenderTransform = rt;
+                img.Cursor = Cursors.SizeAll;
+                border.Child = img;
+                area.Children.Add(border);
+            }
+        }
+
+        private void imgRotate_MouseLeave(object sender, MouseEventArgs e)
+        {
+            rt.BeginAnimation(RotateTransform.AngleProperty, null);
+        }
+
+        private void imgRotate_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Random r = new Random();
+            rt = new RotateTransform(r.Next(-5, 5));
+            ((sender as Image).Parent as Border).RenderTransform = rt;
+            DoubleAnimation da = new DoubleAnimation();
+            da.From = -5;
+            da.To = 5;
+            da.AutoReverse = true;
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            da.SpeedRatio = 2;
+            rt.BeginAnimation(RotateTransform.AngleProperty, da);
+        }
+
+
     }
 }
