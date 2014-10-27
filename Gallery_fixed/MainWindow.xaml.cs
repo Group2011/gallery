@@ -102,11 +102,14 @@ namespace Gallery
             string htmlName = "";
             lock (uniqueLocker)
             {
+                if (!Directory.Exists(@"..\..\Parse\"))
+                    Directory.CreateDirectory(@"..\..\Parse\");
                 htmlName = @"..\..\Parse\" + (unique++).ToString() + ".html";
             }
             WebClient wc = new WebClient();
             wc.Proxy = new WebProxy("10.3.0.3", 3128);
             wc.Proxy.Credentials = new NetworkCredential("inet", "netnetnet");
+            
 
             try
             {
@@ -121,6 +124,10 @@ namespace Gallery
                     {
                         char[] DelChars = { '%', '_', '-', };
                         string imgPath = n.Attributes["src"].Value;
+                        if (imgPath.IndexOf(".jpg") == -1 && imgPath.IndexOf(".JPG") == -1 &&
+                            imgPath.IndexOf(".PNG") == -1 && imgPath.IndexOf(".png") == -1 &&
+                            imgPath.IndexOf(".GIF") == -1 && imgPath.IndexOf(".gif") == -1)
+                            continue;
                         if (!imgPath.Contains("//")) // Если урл не содержит двух слешей, значит адрес изображения относительный и нужно вычленить из url домен сайта
                         {
                             int c = 0;
@@ -141,6 +148,7 @@ namespace Gallery
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
 
                         wc.DownloadFile(imgPath, Regex.Replace(imgName, @"[-%_^]", "", RegexOptions.Compiled));
+
                     }
                     catch
                     {
@@ -247,14 +255,11 @@ namespace Gallery
                 img.Cursor = Cursors.SizeAll;
                 border.Child = img;
                 area.Children.Add(border);
-                //area.Children.Add(img);
             }
         }
 
         void img_MouseLeave(object sender, MouseEventArgs e)
         {
-            //(sender as Image).Width -= 20;
-            //(sender as Image).Height -= 20;
             Border b = (Border)(sender as Image).Parent;
             b.BorderThickness = new Thickness(1);
             b.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC")); 
@@ -262,8 +267,6 @@ namespace Gallery
 
         void img_MouseEnter(object sender, MouseEventArgs e)
         {
-            //(sender as Image).Width += 20;
-            //(sender as Image).Height += 20;
             Border b = (Border)(sender as Image).Parent;
             b.BorderThickness = new Thickness(1);
             b.BorderBrush = new SolidColorBrush(Colors.Blue);
@@ -306,6 +309,7 @@ namespace Gallery
             foreach (var v in tags)
             {
                 Label l = new Label();
+                l.FontFamily = new FontFamily("Calibri");
                 l.Content = v.ToString();
                 l.Tag = v.ToString();
                 l.MouseEnter += Label_MouseEnter;
