@@ -141,6 +141,52 @@ namespace Gallery
             return result;
         }
 
+        public static List<string> GetImagesPathes(string tag)
+        {
+            try
+            {
+                SqlConnection connSql = GetConnection();
+                SqlCommand commSQl = new SqlCommand();
+                SqlDataReader reader = null;
+                List<string> images = new List<string>();
+                commSQl.Connection = connSql;
+                if (tag.Equals("случайные"))
+                    commSQl.CommandText = "SELECT name FROM images";
+                else
+                    commSQl.CommandText = "SELECT I.name FROM images I JOIN tags T ON I.tag_id = T.id where T.name = '" + tag + "'";
+
+                DataTable dt = new DataTable();
+
+                reader = commSQl.ExecuteReader();
+                int line = 0;
+                while (reader.Read())
+                {
+                    if (line == 0)
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            dt.Columns.Add(reader.GetName(i));
+                        }
+                        line++;
+
+                    }
+                    DataRow row = dt.NewRow();
+                    for (int j = 0; j < line; j++)
+                    {
+                        row[j] = reader[j];
+                        images.Add(row[j].ToString());
+                    }
+                    dt.Rows.Add(row);
+                }
+                return images;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
+                return null;
+            }
+        }
+
         public static List<string> GetTags()
         {
             try
@@ -151,6 +197,7 @@ namespace Gallery
                 List<string> tags = new List<string>();
                 commSQl.Connection = connSql;
                 commSQl.CommandText = "select name from tags";
+
                 DataTable dt = new DataTable();
 
                 reader = commSQl.ExecuteReader();

@@ -110,7 +110,7 @@ namespace Gallery
             WebClient wc = new WebClient();
             wc.Proxy = new WebProxy("10.3.0.3", 3128);
             wc.Proxy.Credentials = new NetworkCredential("inet", "netnetnet");
-            
+
 
             try
             {
@@ -144,15 +144,21 @@ namespace Gallery
                             }
                         }
 
-                        string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/'));
+                        string imgName = @"..\..\Images\" + n.Attributes["src"].Value.Substring(n.Attributes["src"].Value.LastIndexOf('/') + 1);
+
                         if (imgName.IndexOf('&') != -1)
                             imgName = imgName.Substring(0, imgName.IndexOf('&')); // обираем все лишнее из адреса изображения
 
-                        wc.DownloadFile(imgPath, Regex.Replace(imgName, @"[-%_^]", "", RegexOptions.Compiled));
+                        imgName = Regex.Replace(imgName, @"[-%_^]", "", RegexOptions.Compiled);
+                        wc.DownloadFile(imgPath, imgName);
 
+                        FileInfo fi = new FileInfo(imgName);
+                        DBHelper.AddImage(fi.Name, imgPath, 1, GetTagName(imgPath));
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        //MessageBox.Show("Упало во время парсинга\n" + ex.Message + "\n" + ex.StackTrace);
+
                         lock (errorsLocker)
                         {
                             errors++;
@@ -183,6 +189,12 @@ namespace Gallery
                     }
                 }
             }
+        }
+
+        private string GetTagName(string url)
+        {
+            string tagName = url.Substring(url.IndexOf("//") + 2);
+            return tagName.Substring(0, tagName.IndexOf("/"));
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -220,21 +232,17 @@ namespace Gallery
 
         void tag_MouseLeave(object sender, MouseEventArgs e)
         {
-            /*Label l1 = (Label)sender;
-            l1.Style = (Style)l1.TryFindResource("TagDefaultStyle");*/
         }
 
         void tag_MouseEnter(object sender, MouseEventArgs e)
         {
-            /*Label l1 = (Label)sender;
-            l1.Style = (Style)l1.TryFindResource("TagMouseEntertStyle");*/
         }
-        
+
 
 
         public void CreateGallery()
         {
-            DirectoryInfo di = new DirectoryInfo("../../Images");
+            DirectoryInfo di = new DirectoryInfo("../../Images/");
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
             double tmp = r.Next(200, 301);
@@ -263,7 +271,7 @@ namespace Gallery
         {
             Border b = (Border)(sender as Image).Parent;
             b.BorderThickness = new Thickness(1);
-            b.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC")); 
+            b.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
         }
 
         void img_MouseEnter(object sender, MouseEventArgs e)
@@ -312,23 +320,87 @@ namespace Gallery
                 l.MouseEnter += Label_MouseEnter;
                 l.MouseLeave += Label_MouseLeave;
                 l.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
-                l.FontSize=14;
+                l.FontSize = 14;
+                l.MouseDown += l_MouseDown;
                 Tags.Children.Add(l);
+            }
+        }
+
+        void l_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                area.Children.Clear();
+                Random r = new Random();
+                double tmp = r.Next(150, 250);
+                List<FileInfo> images = new List<FileInfo>();
+                List<string> imgPathes = DBHelper.GetImagesPathes((sender as Label).Content.ToString());
+                if ((sender as Label).Content.ToString().Equals("случайные"))
+                {
+                    int count = 0;
+                    int attempts = 0;
+                    List<int> ids = new List<int>();
+                    while (true)
+                    {
+                        int i = r.Next(imgPathes.Count);
+                        if (!ids.Contains(i))
+                        {
+                            images.Add(new FileInfo("../../Images/" + imgPathes[i]));
+                            attempts = 0;
+                            count++;
+                        }
+                        else
+                            attempts++;
+                        if (count == 21 || attempts == 10)
+                            break;
+                    }
+                }                
+                else
+                {
+                    foreach (string s in imgPathes)
+                        images.Add(new FileInfo("../../Images/" + s));
+                }
+
+                foreach (FileInfo f in images)
+                {
+                    ImageSourceConverter imgConv = new ImageSourceConverter();
+                    ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(f.FullName);
+                    Image img = new Image();
+                    img.Height = tmp;
+                    img.Source = imageSource;
+                    img.MouseDown += img_MouseDown;
+                    img.MouseEnter += imgRotate_MouseEnter;
+                    img.MouseLeave += imgRotate_MouseLeave;
+                    Border border = new Border();
+                    border.BorderBrush = new SolidColorBrush(Colors.Black);
+                    border.BorderThickness = new Thickness(2);
+                    border.Margin = new Thickness(12);
+                    RotateTransform rt = new RotateTransform(r.Next(-5, 5));
+                    border.RenderTransformOrigin = new Point(0.5, 0.5);
+                    border.RenderTransform = rt;
+                    img.Cursor = Cursors.SizeAll;
+                    border.Child = img;
+                    area.Children.Add(border);
+                }
+                
+                if (images.Count == 0)
+                {
+                    Label l = new Label();
+                    l.FontFamily = new FontFamily("Arial");
+                    l.Content = "C таким тегом картинок нет :(";                    
+                    l.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
+                    l.FontSize = 34;
+                    area.Children.Add(l);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
             }
         }
 
         public void CreateGallery3()
         {
-            //LinearGradientBrush lgb = new LinearGradientBrush();
-            //GradientStop gs1 = new GradientStop(Colors.Black, 0);
-            //GradientStop gs2 = new GradientStop(Colors.DarkBlue, 0.50);
-            //GradientStop gs3 = new GradientStop(Colors.Blue, 0.89);
-            //GradientStop gs4 = new GradientStop(Colors.White, 1);
-            //lgb.GradientStops.Add(gs1);
-            //lgb.GradientStops.Add(gs2);
-            //lgb.GradientStops.Add(gs3);
-            //lgb.GradientStops.Add(gs4);
-            //area.Background = lgb;
 
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
@@ -376,7 +448,5 @@ namespace Gallery
             da.SpeedRatio = 2;
             rt.BeginAnimation(RotateTransform.AngleProperty, da);
         }
-
-
     }
 }
