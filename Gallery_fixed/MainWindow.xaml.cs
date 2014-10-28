@@ -37,6 +37,10 @@ namespace Gallery
         private object threadJobLocker = new object();
         private static int errors = 0;
         private object errorsLocker = new object();
+
+        public static List<ImageSource> sources = new List<ImageSource>();
+        public static int iterator = 0;
+
         private RotateTransform rt = null;
         private double rotateAngle = 0;
 
@@ -48,6 +52,19 @@ namespace Gallery
             areaRef = area;
             gallRef = GalleryContainer;
             this.WindowState = System.Windows.WindowState.Maximized;
+
+            LinearGradientBrush lgb = new LinearGradientBrush();
+            GradientStop gs1 = new GradientStop(Colors.MidnightBlue, 0);
+            GradientStop gs2 = new GradientStop(Colors.Navy, 0.50);
+            lgb.GradientStops.Add(gs1);
+            lgb.GradientStops.Add(gs2);
+            gal2.Background = lgb;
+
+            ImageSourceConverter imgConv = new ImageSourceConverter();
+            ImageSource imageSource = (ImageSource)imgConv.ConvertFromString("nextBTN.png");
+            ImageSource imageSource2 = (ImageSource)imgConv.ConvertFromString("nextBTN.png");
+            nextImg.Source = imageSource;
+            prevImg.Source = imageSource2;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -236,6 +253,13 @@ namespace Gallery
 
         public void CreateGallery()
         {
+            LinearGradientBrush lgb = new LinearGradientBrush();
+            GradientStop gs1 = new GradientStop((Color)ColorConverter.ConvertFromString("#003973"), 0);
+            GradientStop gs2 = new GradientStop((Color)ColorConverter.ConvertFromString("#E5E5BE"), 0.80);
+            lgb.GradientStops.Add(gs1);
+            lgb.GradientStops.Add(gs2);
+            area.Background = lgb;
+
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
@@ -387,19 +411,244 @@ namespace Gallery
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
+            gal2.Visibility = System.Windows.Visibility.Collapsed;
+            area.Visibility = System.Windows.Visibility.Visible;
             area.Children.Clear();
             CreateGallery();
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
+                area.Visibility = System.Windows.Visibility.Collapsed;
+                foreach (var b in spImgs.Children)
+                {
+                    if (!(b is Border))
+                    {
+                        continue;
+                    }
+                    EmToPercents((Border)b);
+                }
+
+                foreach (var b in spMirrorImgs.Children)
+                {
+                    if (!(b is Border))
+                    {
+                        continue;
+                    }
+                    EmToPercents((Border)b);
+                }
+                gal2.Visibility = System.Windows.Visibility.Visible;
+                LoadImgsForGal2();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
+            }
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
+            gal2.Visibility = System.Windows.Visibility.Collapsed;
+            area.Visibility = System.Windows.Visibility.Visible;
             area.Children.Clear();
             CreateGallery3();
+        }
+
+        private void LoadImgsForGal2()
+        {
+            DirectoryInfo di = new DirectoryInfo("../../Images");
+            FileInfo[] images = di.GetFiles();
+            Random r = new Random();
+            double tmp = r.Next(200, 301);
+            foreach (FileInfo f in images)
+            {
+                ImageSourceConverter imgConv = new ImageSourceConverter();
+                sources.Add((ImageSource)imgConv.ConvertFromString(f.FullName));
+            }
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            mediumRightIMG.Source = sources[iterator + 1];
+            mirrorMediumRightIMG.Source = sources[iterator + 1];
+
+            smallRightImg.Source = sources[iterator + 2];
+            mirrorSmallRightIMG.Source = sources[iterator + 2];
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (iterator - 1 < 0)
+                iterator = sources.Count - 1;
+            else
+                iterator--;
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            if (iterator + 1 >= sources.Count)
+            {
+                mediumRightIMG.Source = sources[0];
+                mirrorMediumRightIMG.Source = sources[0];
+            }
+            else
+            {
+                mediumRightIMG.Source = sources[iterator + 1];
+                mirrorMediumRightIMG.Source = sources[iterator + 1];
+            }
+
+            if (iterator + 2 >= sources.Count)
+            {
+                smallRightImg.Source = sources[1];
+                mirrorSmallRightIMG.Source = sources[1];
+            }
+            else
+            {
+                smallRightImg.Source = sources[iterator + 2];
+                mirrorSmallRightIMG.Source = sources[iterator + 2];
+            }
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (iterator + 1 >= sources.Count)
+                iterator = 0;
+            else
+                iterator++;
+
+            largeIMG.Source = sources[iterator];
+            mirrorLargeIMG.Source = sources[iterator];
+
+            if (iterator + 1 >= sources.Count)
+            {
+                mediumRightIMG.Source = sources[0];
+                mirrorMediumRightIMG.Source = sources[0];
+            }
+            else
+            {
+                mediumRightIMG.Source = sources[iterator + 1];
+                mirrorMediumRightIMG.Source = sources[iterator + 1];
+            }
+
+            if (iterator + 2 >= sources.Count)
+            {
+                smallRightImg.Source = sources[1];
+                mirrorSmallRightIMG.Source = sources[1];
+            }
+            else
+            {
+                smallRightImg.Source = sources[iterator + 2];
+                mirrorSmallRightIMG.Source = sources[iterator + 2];
+            }
+
+            if (iterator - 1 < 0)
+            {
+                mediumLeftIMG.Source = sources[sources.Count - 1];
+                mirrorMediumLeftIMG.Source = sources[sources.Count - 1];
+            }
+            else
+            {
+                mediumLeftIMG.Source = sources[iterator - 1];
+                mirrorMediumLeftIMG.Source = sources[iterator - 1];
+            }
+
+            if (iterator - 2 < 0)
+            {
+                smallLeftIMG.Source = sources[sources.Count - 2];
+                mirrorSmallLeftIMG.Source = sources[sources.Count - 2];
+            }
+            else
+            {
+                smallLeftIMG.Source = sources[iterator - 2];
+                mirrorSmallLeftIMG.Source = sources[iterator - 2];
+            }
+        }
+
+        private void EmToPercents(Border b) //переводим единицы измерения wpf в проценты
+        {
+            if (b.Name.Contains("small"))
+            {
+                b.Width = window.ActualHeight * 10 / 100;
+                b.Height = window.ActualHeight * 10 / 100;
+                //(b.Child as Image).Width = b.Width;
+                //(b.Child as Image).Height = b.Height;
+            }
+            if (b.Name.Contains("medium"))
+            {
+                b.Width = window.ActualWidth * 20 / 100;
+                b.Height = window.ActualHeight * 20 / 100;
+                //(b.Child as Image).Width = b.Width;
+                //(b.Child as Image).Height = b.Height;
+            }
+            if (b.Name.Contains("large"))
+            {
+                b.Width = window.ActualWidth * 30 / 100;
+                b.Height = window.ActualHeight * 30 / 100;
+                //(b.Child as Image).Width = b.Width;
+                //(b.Child as Image).Height = b.Height;
+            }
+        }
+
+        private void Window_SizeChanged_1(object sender, SizeChangedEventArgs e)
+        {
+            if (gal2.Visibility == Visibility.Visible)
+            {
+                foreach (Border b in spImgs.Children)
+                {
+                    EmToPercents(b);
+                }
+
+                foreach (Border b in spMirrorImgs.Children)
+                {
+                    EmToPercents(b);
+                }
+            }
         }
     }
 }
