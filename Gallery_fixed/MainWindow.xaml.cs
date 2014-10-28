@@ -38,14 +38,16 @@ namespace Gallery
         private static int errors = 0;
         private object errorsLocker = new object();
         private RotateTransform rt = null;
+        private double rotateAngle = 0;
 
         public MainWindow()
         {
             InitializeComponent();
             window = this;
-            CreateGallery3();
+            CreateGallery();
             areaRef = area;
             gallRef = GalleryContainer;
+            this.WindowState = System.Windows.WindowState.Maximized;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -244,14 +246,14 @@ namespace Gallery
                 ImageSourceConverter imgConv = new ImageSourceConverter();
                 ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(f.FullName);
                 Image img = new Image();
-                img.Height = tmp;
+                img.Height = 250;
                 img.Source = imageSource;
                 img.MouseDown += img_MouseDown;
                 img.MouseEnter += img_MouseEnter;
                 img.MouseLeave += img_MouseLeave;
                 Border border = new Border();
-                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
-                border.BorderThickness = new Thickness(1);
+                border.BorderBrush = new SolidColorBrush(Colors.Black);
+                border.BorderThickness = new Thickness(2);
                 border.Margin = new Thickness(3);
                 img.Cursor = Cursors.SizeAll;
                 border.Child = img;
@@ -262,15 +264,15 @@ namespace Gallery
         void img_MouseLeave(object sender, MouseEventArgs e)
         {
             Border b = (Border)(sender as Image).Parent;
-            b.BorderThickness = new Thickness(1);
-            b.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC")); 
+            b.BorderThickness = new Thickness(2);
+            b.BorderBrush = new SolidColorBrush(Colors.Black); 
         }
 
         void img_MouseEnter(object sender, MouseEventArgs e)
         {
             Border b = (Border)(sender as Image).Parent;
-            b.BorderThickness = new Thickness(1);
-            b.BorderBrush = new SolidColorBrush(Colors.Blue);
+            b.BorderThickness = new Thickness(2);
+            b.BorderBrush = new SolidColorBrush(Colors.DarkGoldenrod);
         }
 
         void img_MouseDown(object sender, MouseButtonEventArgs e)
@@ -319,16 +321,12 @@ namespace Gallery
 
         public void CreateGallery3()
         {
-            //LinearGradientBrush lgb = new LinearGradientBrush();
-            //GradientStop gs1 = new GradientStop(Colors.Black, 0);
-            //GradientStop gs2 = new GradientStop(Colors.DarkBlue, 0.50);
-            //GradientStop gs3 = new GradientStop(Colors.Blue, 0.89);
-            //GradientStop gs4 = new GradientStop(Colors.White, 1);
-            //lgb.GradientStops.Add(gs1);
-            //lgb.GradientStops.Add(gs2);
-            //lgb.GradientStops.Add(gs3);
-            //lgb.GradientStops.Add(gs4);
-            //area.Background = lgb;
+            LinearGradientBrush lgb = new LinearGradientBrush();
+            GradientStop gs1 = new GradientStop((Color)ColorConverter.ConvertFromString("#003973"), 0);
+            GradientStop gs2 = new GradientStop((Color)ColorConverter.ConvertFromString("#E5E5BE"), 0.80);
+            lgb.GradientStops.Add(gs1);
+            lgb.GradientStops.Add(gs2);
+            area.Background = lgb;
 
             DirectoryInfo di = new DirectoryInfo("../../Images");
             FileInfo[] images = di.GetFiles();
@@ -360,23 +358,48 @@ namespace Gallery
 
         private void imgRotate_MouseLeave(object sender, MouseEventArgs e)
         {
-            rt.BeginAnimation(RotateTransform.AngleProperty, null);
+            ((sender as Image).Parent as Border).BorderBrush = Brushes.Black;
+            RotateTransform rotation = new RotateTransform(rt.Angle);
+            ((sender as Image).Parent as Border).RenderTransform = rotation;
         }
 
         private void imgRotate_MouseEnter(object sender, MouseEventArgs e)
         {
-            Random r = new Random();
-            rt = new RotateTransform(r.Next(-5, 5));
+            ((sender as Image).Parent as Border).BorderBrush = Brushes.DarkGoldenrod;
+            RotateTransform rotation = ((sender as Image).Parent as Border).RenderTransform as RotateTransform;
+            if (rotation != null)
+            {
+                rotateAngle = rotation.Angle;
+            }
+            rt = new RotateTransform(rotateAngle);
             ((sender as Image).Parent as Border).RenderTransform = rt;
             DoubleAnimation da = new DoubleAnimation();
-            da.From = -5;
-            da.To = 5;
+            da.From = rotateAngle;
+            if (rotateAngle < 0)
+                da.To = 10;
+            else if (rotateAngle >= 0)
+                da.To = -10;
             da.AutoReverse = true;
             da.RepeatBehavior = RepeatBehavior.Forever;
             da.SpeedRatio = 2;
             rt.BeginAnimation(RotateTransform.AngleProperty, da);
         }
 
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            area.Children.Clear();
+            CreateGallery();
+        }
 
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            area.Children.Clear();
+            CreateGallery3();
+        }
     }
 }

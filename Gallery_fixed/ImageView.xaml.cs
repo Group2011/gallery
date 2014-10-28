@@ -26,12 +26,10 @@ namespace Gallery_fixed
 
             //создание градиента для фона окна
             LinearGradientBrush lb = new LinearGradientBrush();
-            GradientStop gst1 = new GradientStop(Colors.Green, 0);
-            GradientStop gst2 = new GradientStop(Colors.White, 0.5);
-            GradientStop gst3 = new GradientStop(Colors.Green, 1);
+            GradientStop gst1 = new GradientStop((Color)ColorConverter.ConvertFromString("#F1F2B5"), 0);
+            GradientStop gst2 = new GradientStop((Color)ColorConverter.ConvertFromString("#135058"), 1);
             lb.GradientStops.Add(gst1);
             lb.GradientStops.Add(gst2);
-            lb.GradientStops.Add(gst3);
             this.Background = lb;
 
 
@@ -53,10 +51,10 @@ namespace Gallery_fixed
         {
             //анимация градиента фона окна
             DoubleAnimation gradient = new DoubleAnimation();
-            gradient.Duration = TimeSpan.FromSeconds(0.2);
+            gradient.Duration = TimeSpan.FromSeconds(0.4);
             gradient.From = 0;
             gradient.To = 1;
-            gradient.AutoReverse = true;
+            gradient.AutoReverse = false;
             //gradient.RepeatBehavior = RepeatBehavior.Forever;
             (this.Background as LinearGradientBrush).GradientStops[1].BeginAnimation(GradientStop.OffsetProperty, gradient);
 
