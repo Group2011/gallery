@@ -25,6 +25,7 @@
                     <MenuItem Header="Галерея 1" Click="MenuItem_Click_1"></MenuItem>
                     <MenuItem Header="Галерея 2" Click="MenuItem_Click_2"></MenuItem>
                     <MenuItem Header="Галерея 3" Click="MenuItem_Click_3"></MenuItem>
+                    <MenuItem Header="Галерея 4" Click="MenuItem_Click"></MenuItem>
                 </MenuItem>
                 <Separator Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>                
                 <MenuItem Header="Регистрация"></MenuItem>

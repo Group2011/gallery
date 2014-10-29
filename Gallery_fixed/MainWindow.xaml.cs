@@ -381,6 +381,7 @@ namespace Gallery
                                 images.Add(new FileInfo("../../Images/" + imgPathes[i]));
                                 attempts = 0;
                                 count++;
+                                ids.Add(i);
                             }
                             else
                                 attempts++;
@@ -469,6 +470,64 @@ namespace Gallery
                 border.Child = img;
                 area.Children.Add(border);
             }
+        }
+
+        public void CreateGallery4()
+        {
+            area.Children.Clear();
+            LinearGradientBrush lgb = new LinearGradientBrush();
+            GradientStop gs1 = new GradientStop((Color)ColorConverter.ConvertFromString("#003973"), 0);
+            GradientStop gs2 = new GradientStop((Color)ColorConverter.ConvertFromString("#E5E5BE"), 0.80);
+            lgb.GradientStops.Add(gs1);
+            lgb.GradientStops.Add(gs2);
+            area.Background = lgb;
+
+            DirectoryInfo di = new DirectoryInfo("../../Images");
+            FileInfo[] images = di.GetFiles();
+            Random r = new Random();
+
+            foreach (FileInfo f in images)
+            {
+                ImageSourceConverter imgConv = new ImageSourceConverter();
+                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(f.FullName);
+                Image img = new Image();
+                int s = r.Next(80, 121);
+                img.Width = s;
+                img.Height = s;
+                img.Source = imageSource;
+                img.MouseDown += img_MouseDown;
+                img.MouseEnter += imgRotate_MouseEnter;
+                img.MouseLeave += imgRotate_MouseLeave;
+                Border border = new Border();
+                border.BorderBrush = new SolidColorBrush(Colors.Black);
+                border.Background = new SolidColorBrush(Colors.Black);
+                border.BorderThickness = new Thickness(2);
+                border.Margin = new Thickness(12);
+                RotateTransform rt = new RotateTransform(r.Next(-5, 5));
+                border.RenderTransformOrigin = new Point(0.5, 0.5);
+                border.RenderTransform = rt;
+                img.Cursor = Cursors.SizeAll;
+                border.Child = img;
+                border.MouseEnter += border_MouseEnter;
+                border.MouseLeave += border_MouseLeave;
+                border.MouseDown += border_MouseDown;
+                area.Children.Add(border);
+            }
+        }
+
+        void border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            area.Children.Remove(sender as Border);
+        }
+
+        void border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Background = new SolidColorBrush(Colors.Black);
+        }
+
+        void border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Background = new SolidColorBrush(Colors.Red);
         }
 
         private void imgRotate_MouseLeave(object sender, MouseEventArgs e)
@@ -740,6 +799,11 @@ namespace Gallery
                     EmToPercents(b);
                 }
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            CreateGallery4();
         }
     }
 }
