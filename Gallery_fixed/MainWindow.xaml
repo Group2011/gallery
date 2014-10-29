@@ -61,7 +61,7 @@
             
             <Border Margin="5">
                 <WrapPanel x:Name="Tags">
-                    <Label Content="cлучайные" Tag="cлучайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287"></Label>
+                    <Label Content="случайные" Tag="cлучайные" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave" FontSize="14" FontFamily="Calibri" Foreground="#1B5287" MouseDown="l_MouseDown"></Label>
                 </WrapPanel>
             </Border>
 
