@@ -263,7 +263,6 @@ namespace Gallery
 
         public void CreateGallery()
         {
-<<<<<<< HEAD
             LinearGradientBrush lgb = new LinearGradientBrush();
             GradientStop gs1 = new GradientStop((Color)ColorConverter.ConvertFromString("#003973"), 0);
             GradientStop gs2 = new GradientStop((Color)ColorConverter.ConvertFromString("#E5E5BE"), 0.80);
@@ -272,10 +271,7 @@ namespace Gallery
             area.Background = lgb;
 
             DirectoryInfo di = new DirectoryInfo("../../Images");
-=======
             area.Children.Clear();
-            DirectoryInfo di = new DirectoryInfo("../../Images/");
->>>>>>> aa45ec7f663f0483fb99cbe82494e6c101272bff
             FileInfo[] images = di.GetFiles();
             Random r = new Random();
             double tmp = r.Next(200, 301);
