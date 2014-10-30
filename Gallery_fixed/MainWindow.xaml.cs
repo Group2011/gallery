@@ -20,6 +20,7 @@ using Gallery_fixed;
 using System.Text.RegularExpressions;
 
 // 29.10.2014 добавлен коммент
+// 30.10.2014 добавлен коммент
 
 namespace Gallery
 {
