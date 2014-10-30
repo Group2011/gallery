@@ -27,10 +27,8 @@
                     <MenuItem Header="Галерея 3" Click="MenuItem_Click_3"></MenuItem>
                     <MenuItem Header="Галерея 4" Click="MenuItem_Click"></MenuItem>
                 </MenuItem>
-                <Separator Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>                
-                <MenuItem Header="Регистрация" Click="MenuItem_Click_4"></MenuItem>
-                <Separator Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>
-                <MenuItem Header="Вход" Click="MenuItem_Click_5"></MenuItem>
+                <Separator x:Name="m1" Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>
+                <MenuItem  x:Name="m2" Header="Авторизация" Click="MenuItem_Click_4"></MenuItem>
             </Menu>
             <StackPanel >
                 <DockPanel Visibility="Collapsed">
@@ -50,7 +48,7 @@
                     </WrapPanel>
                 </DockPanel>
 
-                <Grid x:Name="searchGrid" Visibility="Visible">
+                <Grid x:Name="searchGrid" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition Width="60"></ColumnDefinition>

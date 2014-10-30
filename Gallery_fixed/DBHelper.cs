@@ -67,49 +67,65 @@ namespace Gallery
             }
         }
 
-
-        /// <summary>
-        /// Есть ли юзер в БД
-        /// </summary>
-        /// <param name="uname">Имя юзера</param>
-        /// <param name="upass">Пароль юзера</param>
-        /// <returns></returns>
-        public static bool UserEnter(string uname, string upass)
+        public static int GetUserID(string name)
         {
+            SqlConnection connSql = GetConnection();
+            SqlCommand commSQl = new SqlCommand();
+            commSQl.CommandText = "SELECT id FROM Users WHERE uname = '" + name + "'";
+            commSQl.Connection = connSql;
+            SqlDataReader reader = null;
+            int id = 0;
             try
             {
-                int id = -1;
-                SqlConnection connSql = GetConnection();
-                SqlCommand commSQl = new SqlCommand();
-                commSQl.CommandText = "SELECT id FROM Users WHERE uname = '" + uname + "' AND upassword = '" + upass + "';";
-                commSQl.Connection = connSql;
-                SqlDataReader reader = null;
-                try
-                {
-                    reader = commSQl.ExecuteReader();
-                    if (reader.Read())
-                        id = Convert.ToInt32(reader[0]);
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Произошла ошибка при попытке прочитать из базы имя пользователя\n" + ex.Message + "\n" + ex.StackTrace);
-                }
-                if (id > 0)
-                {
-                    connSql.Close();
-                    return true;
-                }
-                else
-                {
-                    connSql.Close();
-                    return false;
-                }
+                reader = commSQl.ExecuteReader();
+                if (reader.Read())
+                    id = Convert.ToInt32(reader[0]);
+
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                MessageBox.Show("Произошла ошибка при попытке прочитать из базы юзера\n" + ex.Message + "\n" + ex.StackTrace);
             }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                if (connSql != null)
+                    connSql.Close();
+            }
+            return id;
+        }
+
+                
+        public static bool CheckUser(string log, string pas = "")
+        {
+            SqlConnection connSql = GetConnection();
+            SqlCommand commSQl = new SqlCommand();
+            commSQl.CommandText = "SELECT COUNT(*) FROM Users WHERE uname = '" + log + "'";
+            if (!pas.Equals(""))
+                commSQl.CommandText += "AND upassword = '" + pas + "'";
+            commSQl.Connection = connSql;
+            SqlDataReader reader = null;
+            int i = 0;
+            try
+            {
+                reader = commSQl.ExecuteReader();
+                if (reader.Read())
+                    i = Convert.ToInt32(reader[0]);
+                    
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка при попытке прочитать из базы юзера\n" + ex.Message + "\n" + ex.StackTrace);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                if (connSql != null)
+                    connSql.Close();
+            }
+            return i == 1;
         }
 
         /// <summary>

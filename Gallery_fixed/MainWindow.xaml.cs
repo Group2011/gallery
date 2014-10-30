@@ -32,6 +32,9 @@ namespace Gallery
         public static Window window;
         public static WrapPanel areaRef;
         public static ScrollViewer gallRef;
+        public static Grid search;
+        public static Action MenuItemsHide;
+        public static int idUser = 0;
 
         public bool logged = false;
         private static int unique = 0;
@@ -51,10 +54,12 @@ namespace Gallery
         {
             InitializeComponent();
             window = this;
+            MenuItemsHide = new Action(this.HideLogRegMenuItems);
             CreateGallery();
             areaRef = area;
             gallRef = GalleryContainer;
             this.WindowState = System.Windows.WindowState.Maximized;
+            search = searchGrid;
 
             LinearGradientBrush lgb = new LinearGradientBrush();
             GradientStop gs1 = new GradientStop(Colors.MidnightBlue, 0);
@@ -68,6 +73,11 @@ namespace Gallery
             ImageSource imageSource2 = (ImageSource)imgConv.ConvertFromString("nextBTN.png");
             nextImg.Source = imageSource;
             prevImg.Source = imageSource2;
+        }
+
+        public void HideLogRegMenuItems()
+        {
+            m1.Visibility = m2.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -809,14 +819,14 @@ namespace Gallery
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
+            //this.Visibility = System.Windows.Visibility.Hidden;
             RegLogDialog rld = new RegLogDialog("reg");
             rld.ShowDialog();
         }
 
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
+            //this.Visibility = System.Windows.Visibility.Hidden;
             RegLogDialog rld = new RegLogDialog("log");
             rld.ShowDialog();
         }
