@@ -20,6 +20,99 @@ namespace Gallery
         }
 
         /// <summary>
+        /// Добавление юзера в БД, если такого в ней нет
+        /// </summary>
+        /// <param name="uname">Имя юзера</param>
+        /// <param name="upass">Пароль юзера</param>
+        /// <returns></returns>
+        public static bool AddUser(string uname, string upass)
+        {
+            try
+            {
+                int id = -1;
+                SqlConnection connSql = GetConnection();
+                SqlCommand commSQl = new SqlCommand();
+                commSQl.CommandText = "SELECT id FROM Users WHERE uname = '" + uname + "';";
+                commSQl.Connection = connSql;
+                SqlDataReader reader = null;
+                try
+                {
+                    reader = commSQl.ExecuteReader();
+                    if (reader.Read())
+                        id = Convert.ToInt32(reader[0]);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при попытке прочитать из базы имя пользователя\n" + ex.Message + "\n" + ex.StackTrace);
+                }
+                if (id > 0)
+                {
+                    connSql.Close();
+                    return false;
+                }
+                else
+                {
+                    commSQl = new SqlCommand();
+                    commSQl.CommandText = "INSERT INTO Users VALUES ('" + uname + "', " + "'" + upass + "');";
+                    commSQl.Connection = connSql;
+                    commSQl.ExecuteScalar();
+                    connSql.Close();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Есть ли юзер в БД
+        /// </summary>
+        /// <param name="uname">Имя юзера</param>
+        /// <param name="upass">Пароль юзера</param>
+        /// <returns></returns>
+        public static bool UserEnter(string uname, string upass)
+        {
+            try
+            {
+                int id = -1;
+                SqlConnection connSql = GetConnection();
+                SqlCommand commSQl = new SqlCommand();
+                commSQl.CommandText = "SELECT id FROM Users WHERE uname = '" + uname + "' AND upassword = '" + upass + "';";
+                commSQl.Connection = connSql;
+                SqlDataReader reader = null;
+                try
+                {
+                    reader = commSQl.ExecuteReader();
+                    if (reader.Read())
+                        id = Convert.ToInt32(reader[0]);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при попытке прочитать из базы имя пользователя\n" + ex.Message + "\n" + ex.StackTrace);
+                }
+                if (id > 0)
+                {
+                    connSql.Close();
+                    return true;
+                }
+                else
+                {
+                    connSql.Close();
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Метод проверяет существует ли уже в базе тег 
         /// </summary>
         /// <param name="tag">Имя тега</param>
