@@ -1,0 +1,15 @@
+﻿<Window x:Class="Gallery_fixed.RegDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RegDialog" Height="220" Width="267" ResizeMode="NoResize" Background="#17205D">
+    <StackPanel>
+        <Label Foreground="White" FontFamily="Verdana" FontSize="15" Margin="10" Content="Username"/>
+        <TextBox x:Name="tbUsername" HorizontalAlignment="Left" Width="200" Margin="10,0,0,0"/>
+        <Label Foreground="White" FontFamily="Verdana" FontSize="15" Margin="10" Content="Password"/>
+        <TextBox x:Name="tbPass" HorizontalAlignment="Left" Width="200" Margin="10,0,0,0"/>
+        <WrapPanel>
+            <Button Background="#CADEFF" Foreground="MidnightBlue" x:Name="btCancel" Margin="5,5,125,5" FontFamily="Calibri" FontSize="18" Content="Cancel" Click="btCancel_Click"/>
+            <Button Background="#CADEFF" Foreground="MidnightBlue" x:Name="btConfirm" Margin="5" FontFamily="Calibri" FontSize="18" Content="Confirm" Click="btConfirm_Click"/>
+        </WrapPanel>
+    </StackPanel>
+</Window>

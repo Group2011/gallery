@@ -27,9 +27,9 @@
                     <MenuItem Header="Галерея 3" Click="MenuItem_Click_3"></MenuItem>
                 </MenuItem>
                 <Separator Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>                
-                <MenuItem Header="Регистрация"></MenuItem>
+                <MenuItem Header="Регистрация" Click="MenuItem_Click_4"></MenuItem>
                 <Separator Width="5" Background="Black" BorderThickness="1" BorderBrush="Black"></Separator>
-                <MenuItem Header="Вход"></MenuItem>
+                <MenuItem Header="Вход" Click="MenuItem_Click_5"></MenuItem>
             </Menu>
             <StackPanel >
                 <DockPanel Visibility="Collapsed">

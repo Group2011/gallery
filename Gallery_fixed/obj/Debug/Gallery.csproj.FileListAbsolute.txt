@@ -78,3 +78,5 @@ d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery_fixed_MarkupC
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.g.resources
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.Properties.Resources.resources
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
+d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\RegLogDialog.baml
+d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\RegLogDialog.g.cs

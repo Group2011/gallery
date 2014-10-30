@@ -741,5 +741,19 @@ namespace Gallery
                 }
             }
         }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = System.Windows.Visibility.Hidden;
+            RegLogDialog rld = new RegLogDialog("reg");
+            rld.ShowDialog();
+        }
+
+        private void MenuItem_Click_5(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = System.Windows.Visibility.Hidden;
+            RegLogDialog rld = new RegLogDialog("log");
+            rld.ShowDialog();
+        }
     }
 }
