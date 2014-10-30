@@ -30,25 +30,36 @@ namespace Gallery_fixed
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (tbName.Text.Length < 3 || tbPass.Text.Length < 3)
+            if (tbName.Text.Length < 3 || tbPass.Password.Length < 3)
                 MessageBox.Show("Имя или пароль должны быть длинее 3-х символов");
             else
             {
-                if (type.Equals("reg"))
-                    DBHelper.AddUser(tbName.Text, tbPass.Text);
-                else if (type.Equals("log"))
+                if (!DBHelper.CheckUser(tbName.Text))
                 {
-                    DBHelper.UserEnter(tbName.Text, tbPass.Text);
+                    DBHelper.AddUser(tbName.Text, tbPass.Password);
+                    Gallery.MainWindow.idUser = DBHelper.GetUserID(tbName.Text);
+                    Gallery.MainWindow.search.Visibility = System.Windows.Visibility.Visible;
+                    Gallery.MainWindow.MenuItemsHide();
+                    this.Close();
                 }
-                this.Close();
-                Gallery.MainWindow.window.Visibility = System.Windows.Visibility.Visible;
+                else
+                {
+                    if (DBHelper.CheckUser(tbName.Text, tbPass.Password))
+                    {
+                        Gallery.MainWindow.search.Visibility = System.Windows.Visibility.Visible;
+                        Gallery.MainWindow.MenuItemsHide();
+                        Gallery.MainWindow.idUser = DBHelper.GetUserID(tbName.Text);
+                        this.Close();
+                    }
+                    else
+                        MessageBox.Show("А пароль-то неправильный! \n(Либо юзер с таким именем уже существует)", "Ошибко");
+                }
             }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             this.Close();
-            Gallery.MainWindow.window.Visibility = System.Windows.Visibility.Visible;
         }
     }
 }

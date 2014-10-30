@@ -80,3 +80,5 @@ d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery_fixed.Propert
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\Gallery.csproj.GenerateResource.Cache
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\RegLogDialog.baml
 d:\Profiles\06177\TestProj\gallery\Gallery_fixed\obj\Debug\RegLogDialog.g.cs
+D:\git\gallery\Gallery_fixed\obj\Debug\RegLogDialog.baml
+D:\git\gallery\Gallery_fixed\obj\Debug\RegLogDialog.g.cs
