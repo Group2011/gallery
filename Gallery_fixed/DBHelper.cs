@@ -19,6 +19,34 @@ namespace Gallery
             return connSql;
         }
 
+        public static bool DelImgFromBase(string name)
+        {
+            name = name.Substring(name.LastIndexOf("/")+1);
+            SqlConnection connSql = GetConnection();
+            SqlCommand commSQl = new SqlCommand();
+            commSQl.CommandText = "delete from Images where name like'%"+name+"%'";
+            //commSQl.Parameters.Add(new SqlParameter("p1", name));
+            commSQl.Connection = connSql;
+            bool result;
+
+            try
+            {
+                commSQl.ExecuteNonQuery();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                MessageBox.Show("Произошла ошибка при попытке удалить из базы картинку\n" + ex.Message + "\n" + ex.StackTrace);
+            }
+            finally
+            {
+                if (connSql != null)
+                    connSql.Close();
+            }
+            return result;
+        }
+
         /// <summary>
         /// Добавление юзера в БД, если такого в ней нет
         /// </summary>
