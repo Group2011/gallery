@@ -294,9 +294,10 @@ namespace Gallery
                 Image img = new Image();
                 img.Height = 250;
                 img.Source = imageSource;
-                img.MouseDown += img_MouseDown;
+                img.MouseLeftButtonDown += img_MouseDown;
                 img.MouseEnter += img_MouseEnter;
                 img.MouseLeave += img_MouseLeave;
+                img.MouseRightButtonDown += delimg_MouseRightButtonDown;
                 Border border = new Border();
                 border.BorderBrush = new SolidColorBrush(Colors.Black);
                 border.BorderThickness = new Thickness(2);
@@ -304,6 +305,23 @@ namespace Gallery
                 img.Cursor = Cursors.SizeAll;
                 border.Child = img;
                 area.Children.Add(border);
+            }
+        }
+
+        void delimg_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Image img = (sender as Image);
+                Border b = (img.Parent as Border);
+                string path = (sender as Image).Source.ToString();
+                path = path.Substring(8);
+                area.Children.Remove(b);
+                DBHelper.DelImgFromBase(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.StackTrace);
             }
         }
 
@@ -363,7 +381,7 @@ namespace Gallery
                 l.MouseLeave += Label_MouseLeave;
                 l.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B5287"));
                 l.FontSize = 14;
-                l.MouseDown += l_MouseDown;
+                l.MouseLeftButtonDown += l_MouseDown;
                 Tags.Children.Add(l);
             }
         }
@@ -414,7 +432,7 @@ namespace Gallery
                     Image img = new Image();
                     img.Height = tmp;
                     img.Source = imageSource;
-                    img.MouseDown += img_MouseDown;
+                    img.MouseLeftButtonDown += img_MouseDown;
                     img.MouseEnter += imgRotate_MouseEnter;
                     img.MouseLeave += imgRotate_MouseLeave;
                     Border border = new Border();
@@ -467,9 +485,10 @@ namespace Gallery
                 Image img = new Image();
                 img.Height = tmp;
                 img.Source = imageSource;
-                img.MouseDown += img_MouseDown;
+                img.MouseLeftButtonDown += img_MouseDown;
                 img.MouseEnter += imgRotate_MouseEnter;
                 img.MouseLeave += imgRotate_MouseLeave;
+                img.MouseRightButtonDown += delimg_MouseRightButtonDown;
                 Border border = new Border();
                 border.BorderBrush = new SolidColorBrush(Colors.Black);
                 border.BorderThickness = new Thickness(2);
@@ -506,9 +525,10 @@ namespace Gallery
                 img.Width = s;
                 img.Height = s;
                 img.Source = imageSource;
-                img.MouseDown += img_MouseDown;
+                img.MouseLeftButtonDown += img_MouseDown;
                 img.MouseEnter += imgRotate_MouseEnter;
                 img.MouseLeave += imgRotate_MouseLeave;
+                img.MouseRightButtonDown += delimg_MouseRightButtonDown;
                 Border border = new Border();
                 border.BorderBrush = new SolidColorBrush(Colors.Black);
                 border.Background = new SolidColorBrush(Colors.Black);
@@ -521,7 +541,7 @@ namespace Gallery
                 border.Child = img;
                 border.MouseEnter += border_MouseEnter;
                 border.MouseLeave += border_MouseLeave;
-                border.MouseDown += border_MouseDown;
+                border.MouseLeftButtonDown += border_MouseDown;
                 area.Children.Add(border);
             }
         }
@@ -830,5 +850,7 @@ namespace Gallery
             RegLogDialog rld = new RegLogDialog("log");
             rld.ShowDialog();
         }
+
+        
     }
 }
